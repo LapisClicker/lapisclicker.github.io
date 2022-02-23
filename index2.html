@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lapis-Clicker</title>
+    <link rel="icon" href="LapisLazuli.png"> 
+    <link rel="stylesheet" href="style2.css">
+</head>
+<script>
+    
+    function myFunction() {
+        var lapis = 0;
+        
+        
+    
+    
+    document.getElementById("lapis").innerHTML = lapis;
+    }
+    
+</script>
+<body onload="myFunction()">
+    <div id="top">
+        <div id="navigation">
+            <a href=# onclick="showTool()">Click Tools</a>
+            <a href=# onclick="showForge()">Forge</a>
+            <a href=# onclick="showLapis()">Lapis</a>
+            <a href=# onclick="showUpgrades()">Upgrades</a>
+            <a href=# onclick="showShop()">Shop</a>
+        </div>
+    </div>
+    
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<div id="mainPart">
+<div id="Lapis">
+<div id="image">
+    <a href=# onclick="doSomething()"><img src="LapisLazuli.png" alt="logo"></a>
+
+
+
+    <h1>Dein Lapis: <span id="lapis"></span></h1>
+    <button onclick="resetLapis()">reset</button>
+
+<div class="kaufen">
+    <button onclick="erstelleBoost()">boost</button>
+</div>
+</div>
+</div>
+</div>
+</body>    
+<div id="menu">
+<div id="toolMenu", style="display: none;">
+    <ul>Pickaxe <a href=# onclick="choosePickaxe()">100 Lapis</a></ul>
+    <ul>Dripper</ul>
+    <ul>Drill</ul>
+    <ul>Piggy Axe</ul>
+    <ul>Chrom Pickaxe</ul>
+  </div>
+  <div id="forge", style="display: none;">
+    <ul>hallo</ul>
+    <ul>hallo</ul>
+    <ul>hallo</ul>
+    <ul>hallo</ul>
+    <ul>hallo</ul>
+  </div>
+  <div id="upgradeMenu", style="display: none;">
+    <ul>hallo</ul>
+    <ul>hallo</ul>
+    <ul>hallo</ul>
+    <ul>hallo</ul>
+    <ul>hallo</ul>
+  </div>
+  <div id="shopMenu", style="display: none;">
+    <ul>hallo</ul>
+    <ul>hallo</ul>
+    <ul>hallo</ul>
+    <ul>hallo</ul>
+    <ul>hallo</ul>
+  </div>
+</div>
+   
+
+    <script>
+        var boost = 1;
+        var lapis = 0;
+        var doppelPreis = 100;
+        var pickaxe = "hand";
+
+
+        function showTool() {
+  var tool = document.getElementById("toolMenu");
+  var forge = document.getElementById("forge");
+  var lapis = document.getElementById("Lapis");
+  var upgrades = document.getElementById("upgradeMenu");
+  var shop = document.getElementById("shopMenu");
+  if (tool.style.display === "none") {
+    tool.style.display = "block";
+    forge.style.display = "none";
+    lapis.style.display = "none";
+    upgrades.style.display = "none";
+    shop.style.display = "none";
+  } 
+}
+
+function showForge() {
+  var tool = document.getElementById("toolMenu");
+  var forge = document.getElementById("forge");
+  var lapis = document.getElementById("Lapis");
+  var upgrades = document.getElementById("upgradeMenu");
+  var shop = document.getElementById("shopMenu");
+  if (forge.style.display === "none") {
+    tool.style.display = "none";
+    forge.style.display = "block";
+    lapis.style.display = "none";
+    upgrades.style.display = "none";
+    shop.style.display = "none";
+  } 
+}
+
+function showLapis() {
+  activTool();
+  var tool = document.getElementById("toolMenu");
+  var forge = document.getElementById("forge");
+  var lapis = document.getElementById("Lapis");
+  var upgrades = document.getElementById("upgradeMenu");
+  var shop = document.getElementById("shopMenu");
+  if (lapis.style.display === "none") {
+    tool.style.display = "none";
+    forge.style.display = "none";
+    lapis.style.display = "block";
+    upgrades.style.display = "none";
+    shop.style.display = "none";
+  } 
+}
+
+function showUpgrades() {
+  var tool = document.getElementById("toolMenu");
+  var forge = document.getElementById("forge");
+  var lapis = document.getElementById("Lapis");
+  var upgrades = document.getElementById("upgradeMenu");
+  var shop = document.getElementById("shopMenu");
+  if (upgrades.style.display === "none") {
+    tool.style.display = "none";
+    forge.style.display = "none";
+    lapis.style.display = "none";
+    upgrades.style.display = "block";
+    shop.style.display = "none";
+  } 
+}
+
+function showShop() {
+  var tool = document.getElementById("toolMenu");
+  var forge = document.getElementById("forge");
+  var lapis = document.getElementById("Lapis");
+  var upgrades = document.getElementById("upgradeMenu");
+  var shop = document.getElementById("shopMenu");
+  if (shop.style.display === "none") {
+    tool.style.display = "none";
+    forge.style.display = "none";
+    lapis.style.display = "none";
+    upgrades.style.display = "none";
+    shop.style.display = "block";
+  } 
+}
+
+    function doSomething(){
+        
+        lapis= lapis+boost;
+        
+  
+        document.getElementById("lapis").innerHTML = lapis;
+        document.getElementById("doppelPreis").innerHTML = doppelPreis;
+    }
+
+
+    function resetLapis(){
+        lapis=0;
+        document.getElementById("lapis").innerHTML = lapis;
+    }
+
+
+    function erstelleBoost(){
+        
+        if(lapis>=100){
+            lapis=lapis-100;
+            boost=boost+1;
+            document.getElementById("lapis").innerHTML = lapis;
+        }
+    }
+
+    function doubleBoost(){
+        if(lapis>=doppelPreis){
+            lapis=lapis-doppelPreis;
+            boost=boost*2;
+            doppelPreis=doppelPreis*3;
+        }
+        document.getElementById("lapis").innerHTML = lapis;
+        document.getElementById("doppelPreis").innerHTML = doppelPreis;
+    }
+    function choosePickaxe(){
+        if(lapis>=100){
+        lapis=lapis-100;
+        pickaxe="pickaxe";
+        
+        }
+        
+    }
+    function activTool(){
+        if(pickaxe=="pickaxe"){
+            boost=10;
+        }
+        document.getElementById("lapis").innerHTML = lapis;
+    }
+    function newFun(){
+        lapis=1000000000
+        document.getElementById("lapis").innerHTML = lapis;
+    }
+    function startPickaxe(){
+        pickaxe=start;
+    }
+    </script>
+    
+    
+</body>
+</html>
