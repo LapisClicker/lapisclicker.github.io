@@ -83,3 +83,33 @@ button{
     background-color: rgb(59, 59, 59);
     color: white;
 }
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    width: 400px;
+    top: 20%;
+    left: 250%;
+    margin-left: -30px;
+    position: absolute;
+    z-index: 1;
+  }
+
+  .tooltip:hover{
+    text-decoration: underline;
+  }
+
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
