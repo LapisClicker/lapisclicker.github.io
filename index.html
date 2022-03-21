@@ -12,10 +12,12 @@
     
     function myFunction() {
         var lapis = 0;
+        var wahrscheinlichkeit = 0;
+        var wahrDouble= 0;
+        document.getElementById("pickaxepreis").innerHTML= "100 Lapis";
+        document.getElementById("dripperpreis").innerHTML= "500 Lapis"; 
         
         
-    
-    
     document.getElementById("lapis").innerHTML = lapis;
     }
     
@@ -36,8 +38,13 @@
 <div id="mainPart">
 <div id="Lapis">
 <div id="image">
+  <div id="anzeigeNormalesLapis">
     <a href=# onclick="doSomething()"><img src="LapisLazuli.png" alt="logo"></a>
+  </div>
 
+  <div id="anzeigeGoldLapis", style="display: none;">
+    <a href=# onclick="doSomethingGold()"><img src="LapisGold.png" alt="logo"></a>
+  </div>
 
 
     <h1>Dein Lapis: <span id="lapis"></span></h1>
@@ -52,9 +59,24 @@
 </body>    
 <div id="menu">
 <div id="toolMenu", style="display: none;">
-    <ul>Pickaxe <a href=# onclick="choosePickaxe()">100 Lapis</a></ul>
-    <ul>Dripper</ul>
-    <ul>Drill</ul>
+    <div class="tooltip">
+    <ul>Pickaxe 
+    <span class="tooltiptext">-Generiere pro click 10 Lapis</span>
+    </div>
+    <a href=# onclick="choosePickaxe()"><span id="pickaxepreis"></span></a><br></ul>
+
+    <div class="tooltip">
+        <ul>Dripper 
+        <span class="tooltiptext">-Generiere pro click 15 Lapis<br>-5% chance auf Gold Lapis</span>
+    </div>
+        <a href=# onclick="chooseDripper()"><span id="dripperpreis"></span></a><br></ul>
+
+        <div class="tooltip">
+          <ul>Lapis Drill 
+          <span class="tooltiptext">+Generiere pro click 15 Lapis<br>+5% chance auf Gold Lapis</span>
+      </div>
+          <a href=# onclick="choosePickaxe()">100 Lapis</a><br></ul>
+    
     <ul>Piggy Axe</ul>
     <ul>Chrom Pickaxe</ul>
   </div>
@@ -83,13 +105,27 @@
    
 
     <script>
+      //version 0.2
         var boost = 1;
-        var lapis = 0;
+        let lapis = 0;
+        var lapisGold = 0;
         var doppelPreis = 100;
         var pickaxe = "hand";
+        var goldChance = 0;
+        var lapisString = "null";
+        var zwischenSpeicher= 0;
+        var pickaxestatus = false;
+        var dripperstatus = false;
+        var toolboost = 1;
+        var kaufboost = 0;
+        var vervielfältigungsboost = 1;
 
 
-        function showTool() {
+function berechneScore(){
+  boost = (toolboost + kaufboost) * vervielfältigungsboost;
+}
+
+         function showTool() {
   var tool = document.getElementById("toolMenu");
   var forge = document.getElementById("forge");
   var lapis = document.getElementById("Lapis");
@@ -132,6 +168,7 @@ function showLapis() {
     lapis.style.display = "block";
     upgrades.style.display = "none";
     shop.style.display = "none";
+    lapisUmwandeln();
   } 
 }
 
@@ -162,16 +199,32 @@ function showShop() {
     lapis.style.display = "none";
     upgrades.style.display = "none";
     shop.style.display = "block";
+    
   } 
 }
 
     function doSomething(){
-        
+        berechneScore();
         lapis= lapis+boost;
-        
+        welchesLapis();
+        lapisUmwandeln();
   
-        document.getElementById("lapis").innerHTML = lapis;
-        document.getElementById("doppelPreis").innerHTML = doppelPreis;
+        
+        
+    }
+
+    function doSomethingGold(){
+        
+        lapisGold= lapisGold+boost;
+        var lapisAnzeige = document.getElementById("anzeigeNormalesLapis");
+        var goldAnzeige = document.getElementById("anzeigeGoldLapis");
+        lapisAnzeige.style.display="block";
+        goldAnzeige.style.display="none";
+
+        welchesLapis();
+  
+        lapisUmwandeln();
+        
     }
 
 
@@ -185,8 +238,8 @@ function showShop() {
         
         if(lapis>=100){
             lapis=lapis-100;
-            boost=boost+1;
-            document.getElementById("lapis").innerHTML = lapis;
+            kaufboost=kaufboost+1;
+            lapisUmwandeln();
         }
     }
 
@@ -196,29 +249,104 @@ function showShop() {
             boost=boost*2;
             doppelPreis=doppelPreis*3;
         }
-        document.getElementById("lapis").innerHTML = lapis;
+        lapisUmwandeln();
         document.getElementById("doppelPreis").innerHTML = doppelPreis;
     }
     function choosePickaxe(){
+      if(pickaxestatus==false){
         if(lapis>=100){
+          if(pickaxe=="dripper"){
+          document.getElementById("dripperpreis").innerHTML = "inaktiv";
+        }
         lapis=lapis-100;
         pickaxe="pickaxe";
+        document.getElementById("pickaxepreis").innerHTML = "aktiv";
+        pickaxestatus=true;
         
         }
+        }else{
+          if(pickaxe=="dripper"){
+          document.getElementById("dripperpreis").innerHTML = "inaktiv";
+          }
+          pickaxe="pickaxe";
+          document.getElementById("pickaxepreis").innerHTML = "aktiv";  
+      }
+    }
+
+        function chooseDripper(){
+        if(dripperstatus==false){
+          if(pickaxe=="dripper"){
+          document.getElementById("dripperpreis").innerHTML = "inaktiv";
+          }
+        if(lapis>=500){
+        lapis=lapis-500;
+        pickaxe="pickaxe";
+        document.getElementById("pickaxepreis").innerHTML = "aktiv";
+        dripperstatus=true;
+        }
+        }else{
+          if(pickaxe=="pickaxe"){
+          document.getElementById("pickaxepreis").innerHTML = "inaktiv";
+          }
+          pickaxe="dripper";
+          document.getElementById("dripperpreis").innerHTML = "aktiv";
+        }    
         
     }
     function activTool(){
         if(pickaxe=="pickaxe"){
-            boost=10;
+            toolboost=10;
+            goldChance=0;
+            
         }
-        document.getElementById("lapis").innerHTML = lapis;
+        if(pickaxe=="dripper"){
+            toolboost=15;
+            goldChance=20; //100:20=5 deshalb 5%
+        }
+        lapisUmwandeln();
     }
     function newFun(){
-        lapis=1000000000
-        document.getElementById("lapis").innerHTML = lapis;
+        lapis=100000
+        lapisUmwandeln();
     }
     function startPickaxe(){
         pickaxe=start;
+    }
+
+    
+
+    function welchesLapis(){
+      var aktuellesLapis = "lapis";
+      
+      wahrDouble = Math.random()*100;
+      wahrscheinlichkeit= Math.floor(wahrDouble);
+      if(wahrscheinlichkeit % goldChance ===0){
+        //set aktuellesLapis
+        var lapisAnzeige = document.getElementById("anzeigeNormalesLapis");
+        var goldAnzeige = document.getElementById("anzeigeGoldLapis");
+        lapisAnzeige.style.display="none";
+        goldAnzeige.style.display="block";
+      }
+    }
+
+    function lapisUmwandeln(){
+      
+      if (lapis>=1000) {
+        zwischenSpeicher=lapis/100;
+        zwischenSpeicher= Math.floor(zwischenSpeicher);
+        zwischenSpeicher2 = zwischenSpeicher/10;
+        lapisString=""+ zwischenSpeicher2 + "k";
+
+          if(lapis>=1000000) {
+          zwischenSpeicher=lapis/100000
+          zwischenSpeicher= Math.floor(zwischenSpeicher);
+        zwischenSpeicher2 = zwischenSpeicher/10;
+        lapisString=""+ zwischenSpeicher2 + "m";
+          }
+      }else{
+        lapisString=lapis;
+      }
+      document.getElementById("lapis").innerHTML = lapisString;
     }
     </script>
     
