@@ -113,3 +113,7 @@ button{
   .tooltip:hover .tooltiptext {
     visibility: visible;
   }
+
+  #upgradeMenu {
+      text-align: center;
+  }
