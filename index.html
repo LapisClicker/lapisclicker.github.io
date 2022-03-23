@@ -15,7 +15,9 @@
         var wahrscheinlichkeit = 0;
         var wahrDouble= 0;
         document.getElementById("pickaxepreis").innerHTML= "100 Lapis";
-        document.getElementById("dripperpreis").innerHTML= "500 Lapis"; 
+        document.getElementById("dripperpreis").innerHTML= "500 Lapis";
+        document.getElementById("einfachbooststufe").innerHTML= 1;
+        document.getElementById("einfachboostpreis").innerHTML= 50;  
         
         
     document.getElementById("lapis").innerHTML = lapis;
@@ -75,7 +77,7 @@
           <ul>Lapis Drill 
           <span class="tooltiptext">+Generiere pro click 15 Lapis<br>+5% chance auf Gold Lapis</span>
       </div>
-          <a href=# onclick="choosePickaxe()">100 Lapis</a><br></ul>
+          <a href=# onclick="choosePickaxe()">1m Lapis</a><br></ul>
     
     <ul>Piggy Axe</ul>
     <ul>Chrom Pickaxe</ul>
@@ -88,7 +90,7 @@
     <ul>hallo</ul>
   </div>
   <div id="upgradeMenu", style="display: none;">
-    <ul>hallo</ul>
+    <ul>+1 boost <a href=# onclick="erstelleBoost()"><span id="einfachboostpreis"></span> Lapis</a> (stufe <span id="einfachbooststufe"></span>)<br></ul>
     <ul>hallo</ul>
     <ul>hallo</ul>
     <ul>hallo</ul>
@@ -119,6 +121,7 @@
         var toolboost = 1;
         var kaufboost = 0;
         var vervielfältigungsboost = 1;
+        var singleboost= 1;
 
 
 function berechneScore(){
@@ -235,11 +238,14 @@ function showShop() {
 
 
     function erstelleBoost(){
-        
-        if(lapis>=100){
-            lapis=lapis-100;
+    var singelboostpreis=(singleboost)*50;
+        if(lapis>=singelboostpreis){
+            lapis=lapis-singelboostpreis;
             kaufboost=kaufboost+1;
             lapisUmwandeln();
+            singleboost=singleboost+1;
+            document.getElementById("einfachbooststufe").innerHTML= singleboost;
+            document.getElementById("einfachboostpreis").innerHTML= (singelboostpreis + 50);  
         }
     }
 
@@ -256,43 +262,51 @@ function showShop() {
       if(pickaxestatus==false){
         if(lapis>=100){
           if(pickaxe=="dripper"){
-          document.getElementById("dripperpreis").innerHTML = "inaktiv";
         }
         lapis=lapis-100;
         pickaxe="pickaxe";
-        document.getElementById("pickaxepreis").innerHTML = "aktiv";
         pickaxestatus=true;
         
         }
         }else{
-          if(pickaxe=="dripper"){
-          document.getElementById("dripperpreis").innerHTML = "inaktiv";
-          }
-          pickaxe="pickaxe";
-          document.getElementById("pickaxepreis").innerHTML = "aktiv";  
+          pickaxe="pickaxe";  
       }
+      colorTool();
     }
 
         function chooseDripper(){
         if(dripperstatus==false){
-          if(pickaxe=="dripper"){
-          document.getElementById("dripperpreis").innerHTML = "inaktiv";
-          }
         if(lapis>=500){
-        lapis=lapis-500;
-        pickaxe="pickaxe";
-        document.getElementById("pickaxepreis").innerHTML = "aktiv";
+          lapis=lapis-500;
+        pickaxe="dripper";
         dripperstatus=true;
         }
         }else{
-          if(pickaxe=="pickaxe"){
-          document.getElementById("pickaxepreis").innerHTML = "inaktiv";
-          }
           pickaxe="dripper";
-          document.getElementById("dripperpreis").innerHTML = "aktiv";
+          }
+          colorTool()
         }    
-        
-    }
+      
+    function colorTool(){
+      if (pickaxe=="pickaxe"){
+        pickaxepreis.style.backgroundColor="darkgreen";
+        document.getElementById("pickaxepreis").innerHTML = "aktiv";
+        if(dripperstatus==true){
+          dripperpreis.style.backgroundColor="darkred";
+          document.getElementById("dripperpreis").innerHTML = "inaktiv";
+        }
+      }
+      if (pickaxe=="dripper"){
+        dripperpreis.style.backgroundColor="darkgreen";
+        document.getElementById("dripperpreis").innerHTML = "aktiv";
+        if(pickaxestatus==true){
+          pickaxepreis.style.backgroundColor="darkred";
+          document.getElementById("pickaxepreis").innerHTML = "inaktiv";
+        }
+      }
+    }    
+
+    
     function activTool(){
         if(pickaxe=="pickaxe"){
             toolboost=10;
