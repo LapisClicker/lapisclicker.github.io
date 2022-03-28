@@ -10,12 +10,11 @@ body{
     min-height: 80%;
 }
 
-
 #image img {
-    width: 30%;
+    width: 25%;
 
     
-    margin-left: 35%;
+    margin-left: 37.25%;
     
     
     
@@ -117,3 +116,23 @@ button{
   #upgradeMenu {
       text-align: center;
   }
+
+#footer{
+    position: fixed;
+    left: 0%;
+    bottom: 2%;
+    width: 100%;
+    padding-left: 40%;
+    
+   
+    font-weight: bold;
+    
+    }
+#footerbtn{
+    color: black;
+    background-color: goldenrod;
+    border-radius: 15px;
+}
+#footer button:hover{
+    background-color: gray;
+}
