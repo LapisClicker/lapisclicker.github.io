@@ -16,6 +16,7 @@
         var wahrDouble= 0;
         document.getElementById("pickaxepreis").innerHTML= "100 Lapis";
         document.getElementById("dripperpreis").innerHTML= "500 Lapis";
+        document.getElementById("drillpreis").innerHTML= "50k Lapis";
         document.getElementById("einfachbooststufe").innerHTML= 1;
         document.getElementById("einfachboostpreis").innerHTML= 50;  
         
@@ -77,7 +78,7 @@
           <ul>Lapis Drill 
           <span class="tooltiptext">+Generiere pro click 15 Lapis<br>+5% chance auf Gold Lapis</span>
       </div>
-          <a href=# onclick="choosePickaxe()">1m Lapis</a><br></ul>
+          <a href=# onclick="chooseDrill()"><span id="drillpreis"></span></a><br></ul>
     
     <ul>Piggy Axe</ul>
     <ul>Chrom Pickaxe</ul>
@@ -104,9 +105,35 @@
     <ul>hallo</ul>
   </div>
 </div>
+<div id="footer">
+  
+  <button onclick="changeSort()" id="footerbtn" >
+
+    Gold: <span id="anzeigeShort"></span>
+
+  </button>
+</div>
    
 
     <script>
+
+      function changeShort(){
+        var zaehlShort = 0;
+        
+        var btnfoot = document.getElementById("footerbtn");
+        
+        btnfoot.style.backgroundColor="red";
+        if(zaehlShort==0){
+          zaehlShort=1;
+          btnfoot.style.backgroundColor='red';
+        }
+        if(zaehlShort==1){
+          zaehlShort=2;
+        }
+        if(zaehlShort==2){
+          zaehlShort=0;
+        }
+      }
       //version 0.2
         var boost = 1;
         let lapis = 0;
@@ -118,6 +145,7 @@
         var zwischenSpeicher= 0;
         var pickaxestatus = false;
         var dripperstatus = false;
+        var drillstatus = false;
         var toolboost = 1;
         var kaufboost = 0;
         var vervielfältigungsboost = 1;
@@ -223,7 +251,7 @@ function showShop() {
         var goldAnzeige = document.getElementById("anzeigeGoldLapis");
         lapisAnzeige.style.display="block";
         goldAnzeige.style.display="none";
-
+        document.getElementById("anzeigeShort").innerHTML=lapisGold;
         welchesLapis();
   
         lapisUmwandeln();
@@ -286,6 +314,19 @@ function showShop() {
           }
           colorTool()
         }    
+
+        function chooseDrill(){
+        if(drillstatus==false){
+        if(lapis>=50000){
+          lapis=lapis-50000;
+        pickaxe="drill";
+        drillstatus=true;
+        }
+        }else{
+          pickaxe="drill";
+          }
+          colorTool()
+        } 
       
     function colorTool(){
       if (pickaxe=="pickaxe"){
@@ -295,6 +336,10 @@ function showShop() {
           dripperpreis.style.backgroundColor="darkred";
           document.getElementById("dripperpreis").innerHTML = "inaktiv";
         }
+        if(drillstatus==true){
+          drillpreis.style.backgroundColor="darkred";
+          document.getElementById("drillpreis").innerHTML = "inaktiv";
+        }
       }
       if (pickaxe=="dripper"){
         dripperpreis.style.backgroundColor="darkgreen";
@@ -302,6 +347,22 @@ function showShop() {
         if(pickaxestatus==true){
           pickaxepreis.style.backgroundColor="darkred";
           document.getElementById("pickaxepreis").innerHTML = "inaktiv";
+        }
+        if(drillstatus==true){
+          drillpreis.style.backgroundColor="darkred";
+          document.getElementById("drillpreis").innerHTML = "inaktiv";
+        }
+      }
+      if (pickaxe=="drill"){
+        drillpreis.style.backgroundColor="darkgreen";
+        document.getElementById("drillpreis").innerHTML = "aktiv";
+        if(pickaxestatus==true){
+          pickaxepreis.style.backgroundColor="darkred";
+          document.getElementById("pickaxepreis").innerHTML = "inaktiv";
+        }
+        if(dripperstatus==true){
+          dripperpreis.style.backgroundColor="darkred";
+          document.getElementById("dripperpreis").innerHTML = "inaktiv";
         }
       }
     }    
@@ -316,6 +377,11 @@ function showShop() {
         if(pickaxe=="dripper"){
             toolboost=15;
             goldChance=20; //100:20=5 deshalb 5%
+        }
+        if(pickaxe=="drill"){
+            toolboost=1000;
+            goldChance=0;
+            
         }
         lapisUmwandeln();
     }
