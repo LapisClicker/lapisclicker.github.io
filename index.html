@@ -18,7 +18,10 @@
         document.getElementById("dripperpreis").innerHTML= "500 Lapis";
         document.getElementById("drillpreis").innerHTML= "50k Lapis";
         document.getElementById("einfachbooststufe").innerHTML= 1;
-        document.getElementById("einfachboostpreis").innerHTML= 50;  
+        document.getElementById("einfachboostpreis").innerHTML= 50;
+        document.getElementById("mehrbooststufe").innerHTML= 1;
+        document.getElementById("mehrboostpreis").innerHTML= "1m";
+        forgepickaxe.style.display="none";  
         
         
     document.getElementById("lapis").innerHTML = lapis;
@@ -84,25 +87,35 @@
     <ul>Chrom Pickaxe</ul>
   </div>
   <div id="forge", style="display: none;">
+    <div id="forgepickaxe">
+      <ul><a href=# onclick="uselapisbuffpickaxe()"> Lapis Buff (6<span id="pickaxelapisbuff"></span>/10) </a>
+        <a href=# onclick="usetoolbuffpickaxe()"> Tool Buff (<span id="pickaxetoolbuff"></span>/5) </a>
+        <a href=# onclick="kaufecbox()"> Luck Buff (7<span id="pickaxeluckbuff"></span>/10) </a><br></ul>
     <ul>hallo</ul>
     <ul>hallo</ul>
     <ul>hallo</ul>
     <ul>hallo</ul>
-    <ul>hallo</ul>
+  </div>
   </div>
   <div id="upgradeMenu", style="display: none;">
-    <ul>+1 boost <a href=# onclick="erstelleBoost()"><span id="einfachboostpreis"></span> Lapis</a> (stufe <span id="einfachbooststufe"></span>)<br></ul>
+    <ul>+1 Boost <a href=# onclick="erstelleBoost()"><span id="einfachboostpreis"></span> Lapis</a> (stufe <span id="einfachbooststufe"></span>)<br></ul>
+    <ul>+1 Multiplier <a href=# onclick="erstelleMulti()"><span id="mehrboostpreis"></span> Lapis</a> (stufe <span id="mehrbooststufe"></span>)<br></ul>
+    <ul>+1 Luck <a href=# onclick="erstelleMulti()"><span id="mehrboostpreis"></span>  1000 Lapis</a> (stufe <span id="mehrbooststufe"></span>)<br></ul>
+    <ul>+1 Rank <a href=# onclick="erstelleMulti()"><span id="mehrboostpreis"></span> Lapis</a> (stufe <span id="mehrbooststufe"></span>)<br></ul>
+    <ul>+1 Inteligence <a href=# onclick="erstelleMulti()"><span id="mehrboostpreis"></span> Lapis</a> (stufe <span id="mehrbooststufe"></span>)<br></ul>
+
+  </div>
+  <div id="shopMenu", style="display: none;">
+    <div id="shopuebersicht">
+    <ul>Lootbox <a href=# onclick="kaufecbox()">100 Gold</a> (common)<br></ul>
     <ul>hallo</ul>
     <ul>hallo</ul>
     <ul>hallo</ul>
     <ul>hallo</ul>
   </div>
-  <div id="shopMenu", style="display: none;">
-    <ul>hallo</ul>
-    <ul>hallo</ul>
-    <ul>hallo</ul>
-    <ul>hallo</ul>
-    <ul>hallo</ul>
+  <div id="openbox">
+    <h1><span id="boxinhalt"></span></h1>
+  </div>
   </div>
 </div>
 <div id="footer">
@@ -148,13 +161,54 @@
         var drillstatus = false;
         var toolboost = 1;
         var kaufboost = 0;
-        var vervielfältigungsboost = 1;
+        var multiboost = 1;
         var singleboost= 1;
+        var multiboostpreis=1000000;
+        var zahlString="null";
+        var boxresult="null";
+        var randomzahl=0;
 
+        var stashtoolbuff =0;
+        var stashlapisbuff =0;
+        var stashluckbuff =0;
+        
+        var pickaxetoolbuff =0;
+        var pickaxelapisbuff =0;
+        var pickaxeluckbuff =0;
+
+        var drippertoolbuff =0;
+        var dripperlapisbuff =0;
+        var dripperluckbuff =0;
+
+        var drilltoolbuff =0;
+        var drilllapisbuff =0;
+        var drillluckbuff =0;
+
+function usetoolbuffpickaxe(){
+  if(stashtoolbuff>=1){
+    pickaxetoolbuff=pickaxetoolbuff+1;
+    stashtoolbuff=stashtoolbuff-1;
+    document.getElementById("pickaxetoolbuff").innerHTML = pickaxetoolbuff;
+  }
+}
+
+function uselapisbuffpickaxe(){
+  if(stashtoolbuff>=1){
+    pickaxelapisbuff=pickaxelapisbuff+1;
+    stashlapisbuff=stashlapisbuff-1;
+    document.getElementById("pickaxelapisbuff").innerHTML = pickaxelapisbuff;
+  }
+}
 
 function berechneScore(){
-  boost = (toolboost + kaufboost) * vervielfältigungsboost;
+  boost = (toolboost + kaufboost) * multiboost;
 }
+
+function berechneScorePickaxe(){
+  toolboost=10*pickaxetoolbuff+5*pickaxelapisbuff+10;
+}
+
+
 
          function showTool() {
   var tool = document.getElementById("toolMenu");
@@ -177,13 +231,20 @@ function showForge() {
   var lapis = document.getElementById("Lapis");
   var upgrades = document.getElementById("upgradeMenu");
   var shop = document.getElementById("shopMenu");
+  var forgepickaxe = document.getElementById("forgepickaxe");
   if (forge.style.display === "none") {
     tool.style.display = "none";
     forge.style.display = "block";
     lapis.style.display = "none";
     upgrades.style.display = "none";
     shop.style.display = "none";
-  } 
+  }
+  
+  if(pickaxe=="pickaxe"){
+    forgepickaxe.style.display="block";
+  }else{
+    forgepickaxe.style.display="none";
+  }
 }
 
 function showLapis() {
@@ -231,7 +292,9 @@ function showShop() {
     upgrades.style.display = "none";
     shop.style.display = "block";
     
-  } 
+  }
+  var lootbox = document.getElementById("openbox");
+  lootbox.style.display="none"; 
 }
 
     function doSomething(){
@@ -273,7 +336,19 @@ function showShop() {
             lapisUmwandeln();
             singleboost=singleboost+1;
             document.getElementById("einfachbooststufe").innerHTML= singleboost;
-            document.getElementById("einfachboostpreis").innerHTML= (singelboostpreis + 50);  
+            document.getElementById("einfachboostpreis").innerHTML= zahlUmwandeln(singelboostpreis + 50);  
+        }
+    }
+
+    function erstelleMulti(){
+    
+        if(lapis>=multiboostpreis){
+            lapis=lapis-multiboostpreis;
+            multiboost=multiboost+1;
+            lapisUmwandeln();
+            multiboostpreis=1000000*(Math.pow(10, multiboost-1)/2);
+            document.getElementById("mehrbooststufe").innerHTML= multiboost;
+            document.getElementById("mehrboostpreis").innerHTML= zahlUmwandeln(multiboostpreis);  
         }
     }
 
@@ -370,7 +445,7 @@ function showShop() {
     
     function activTool(){
         if(pickaxe=="pickaxe"){
-            toolboost=10;
+            berechneScorePickaxe();
             goldChance=0;
             
         }
@@ -409,6 +484,40 @@ function showShop() {
       }
     }
 
+    function kaufecbox(){
+      if(lapisGold>=100){
+        lapisGold=lapisGold-100;
+        document.getElementById("anzeigeShort").innerHTML=lapisGold;
+        randomzahl=Math.floor(Math.random()*100);
+        if(randomzahl < 10){
+          boxresult="Tool Buff";
+          stashtoolbuff=stashtoolbuff+1;
+        }else{
+          boxresult="1k Lapis";
+          lapis=lapis+1000;
+        }
+        document.getElementById("boxinhalt").innerHTML = boxresult;
+        boxinhalt();
+        setTimeout(hideboxinhalt, 1000);
+        }
+      }
+
+    function boxinhalt(){
+     var shopuebersicht = document.getElementById("shopuebersicht");
+     var lootbox = document.getElementById("openbox");
+     shopuebersicht.style.display="none";
+     lootbox.style.display="block";
+
+    }
+
+    function hideboxinhalt(){
+     var shopuebersicht = document.getElementById("shopuebersicht");
+     var lootbox = document.getElementById("openbox");
+     shopuebersicht.style.display="block";
+     lootbox.style.display="none";
+
+    }
+
     function lapisUmwandeln(){
       
       if (lapis>=1000) {
@@ -427,6 +536,26 @@ function showShop() {
         lapisString=lapis;
       }
       document.getElementById("lapis").innerHTML = lapisString;
+    }
+
+    function zahlUmwandeln(zahl){
+      
+      if (zahl>=1000) {
+        zwischenSpeicher=zahl/100;
+        zwischenSpeicher= Math.floor(zwischenSpeicher);
+        zwischenSpeicher2 = zwischenSpeicher/10;
+        zahlString=""+ zwischenSpeicher2 + "k";
+
+          if(zahl>=1000000) {
+          zwischenSpeicher=zahl/100000
+          zwischenSpeicher= Math.floor(zwischenSpeicher);
+        zwischenSpeicher2 = zwischenSpeicher/10;
+        zahlString=""+ zwischenSpeicher2 + "m";
+          }
+      }else{
+        zahlString=zahl;
+      }
+      return zahlString;
     }
     </script>
     
