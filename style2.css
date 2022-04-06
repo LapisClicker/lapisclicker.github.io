@@ -1,5 +1,6 @@
 html{
     height: 100%;
+    overflow: hidden;
 }
 body{
     height: 100%;
@@ -64,7 +65,16 @@ button{
 
 #toolMenu {
     text-align: center;
+    max-width: 100%;
+    height: auto;
+    
 }
+#toolMenu img{
+    max-width: 6%;
+    height: auto;
+    margin-left:6% ;
+}
+
 #menu {
     font-size: x-large;
     font-family: Arial;
@@ -116,6 +126,14 @@ button{
   #upgradeMenu {
       text-align: center;
   }
+
+  #shopMenu {
+    text-align: center;
+}
+
+#forge {
+    text-align: center;
+}
 
 #footer{
     position: fixed;
