@@ -11,15 +11,28 @@ body{
     min-height: 80%;
 }
 
+
+
 #image img {
     width: 25%;
 
     
     margin-left: 37.25%;
+      
     
-    
-    
-    
+}
+
+.usal img{
+    cursor: pointer;
+}
+.pickaxepointer img{
+    cursor: url(Pickaxe64.png),auto; 
+}
+.dripperpointer img{
+    cursor: url(Dripper64.png),auto; 
+}
+.drillpointer img{
+    cursor: url(Drill64.png),auto; 
 }
 h1{
     color: rgb(47, 124, 160);
@@ -133,6 +146,69 @@ button{
 
 #forge {
     text-align: center;
+}
+
+
+
+
+
+#forge img{
+    width: 10%;
+    padding-left: 3%;
+    
+}
+
+#upgradestones a{
+    width: 10px;
+    border-radius: 10px;
+    background-color: rgb(175, 31, 31);
+    color: white;
+    font-size: 60px;
+    padding-left: 2px;
+    
+    
+}
+
+#inv{
+    display: none;
+}
+
+#inv img{
+    width: 32px;
+}
+
+#inv ul{
+    padding-left: 0px;
+}
+
+#inv a{
+    
+    border-radius: 10px;
+    background-color: rgb(175, 31, 31);
+    color: white;
+    font-size: 38px;
+    padding-left: 0px;
+       
+}
+
+#inv a img{
+    text-align: center;
+    width: 30px;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 0%;
+    padding-left: 8px;
+    padding-right: 8px;  
+}
+
+#upgradestones a img{
+    text-align: center;
+    width: 50px;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 0%;
+    padding-left: 8px;
+    padding-right: 8px;  
 }
 
 #footer{
