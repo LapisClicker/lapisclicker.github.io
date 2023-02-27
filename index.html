@@ -17,6 +17,7 @@
         document.getElementById("pickaxepreis").innerHTML= "100 Lapis";
         document.getElementById("dripperpreis").innerHTML= "500 Lapis";
         document.getElementById("drillpreis").innerHTML= "50k Lapis";
+        document.getElementById("piggypreis").innerHTML= "200m Lapis";
         document.getElementById("einfachbooststufe").innerHTML= 1;
         document.getElementById("einfachboostpreis").innerHTML= 50;
         document.getElementById("mehrbooststufe").innerHTML= 0;
@@ -30,9 +31,16 @@
         document.getElementById("drilllapisbuff").innerHTML= 0;
         document.getElementById("drilltoolbuff").innerHTML= 0;
         document.getElementById("drillluckbuff").innerHTML= 0;
+        document.getElementById("piggylapisbuff").innerHTML= 0;
+        document.getElementById("piggytoolbuff").innerHTML= 0;
+        document.getElementById("piggyluckbuff").innerHTML= 0;
+        document.getElementById("05sText").innerHTML= "&#128274";
+        document.getElementById("02sText").innerHTML= "&#128274";
+        document.getElementById("0sText").innerHTML= "&#128274";
         
         
     document.getElementById("lapis").innerHTML = lapis;
+    //load();
     }
     
 </script>
@@ -65,11 +73,11 @@
     <button onclick="resetLapis()">reset</button>
     <button onclick="safe()">safe</button>
     <button onclick="load()">load</button>
+    
 
 
-<div class="kaufen">
-    <button onclick="erstelleBoost()">boost</button>
-</div>
+
+    
 </div>
 </div>
 </div>
@@ -78,23 +86,28 @@
 <div id="toolMenu", style="display: none;">
     <div class="tooltip">
     <ul>Pickaxe 
-    <span class="tooltiptext">-Generiere pro click 10 Lapis</span>
+    <span class="tooltiptext">+Generiere pro click 10 Lapis</span>
     </div>
     <a href=# onclick="choosePickaxe()"><span id="pickaxepreis"></span></a><br></ul>
 
     <div class="tooltip">
         <ul>Dripper 
-        <span class="tooltiptext">-Generiere pro click 15 Lapis<br>-5% chance auf Gold Lapis</span>
+        <span class="tooltiptext">+Generiere pro click 15 Lapis<br>+5% chance auf Gold Lapis<br>+H&ouml;here Goldchance</span>
     </div>
         <a href=# onclick="chooseDripper()"><span id="dripperpreis"></span></a><br></ul>
 
         <div class="tooltip">
           <ul>Lapis Drill 
-          <span class="tooltiptext">+Generiere pro click 15 Lapis<br>+5% chance auf Gold Lapis</span>
+          <span class="tooltiptext">+Generiere pro click 1000 Lapis<br>+Extra Lapis bei Toolbuff</span>
       </div>
           <a href=# onclick="chooseDrill()"><span id="drillpreis"></span></a><br></ul>
+
+      <div class="tooltip">
+          <ul>Piggy Axe 
+          <span class="tooltiptext">+Generiere pro click 1500 Lapis<br>+Piggy Bank</span>
+      </div>
+          <a href=# onclick="choosePiggy()"><span id="piggypreis"></span></a><br></ul>
     
-    <ul>Piggy Axe</ul>
     <ul>Chrom Pickaxe</ul>
   </div>
   <div id="forge", style="display: none;">
@@ -150,6 +163,19 @@
     <a href=# onclick="useluckbuffdrill()"> Luck Buff (<span id="drillluckbuff"></span>/100) </a><br></ul>
 
 </div>
+<div id="forgepiggy">
+  <img src="logos/piggy axe.png" alt="logo">
+  <ul><a href=# onclick="uselapisbuffpiggy()"> Lapis Buff (<span id="piggylapisbuff"></span>/250) </a>
+    <a href=# onclick="usetoolbuffpiggy()"> Tool Buff (<span id="piggytoolbuff"></span>/500) </a>
+    <a href=# onclick="useluckbuffpiggy()"> Luck Buff (<span id="piggyluckbuff"></span>/250) </a><br></ul>
+
+    <div id="piggybank">
+
+      <img src="bank.png" alt="Bank">
+
+    </div>
+
+</div>
   </div>
   <div id="upgradeMenu", style="display: none;">
     <ul>+1 Boost <a href=# onclick="erstelleBoost()"><span id="einfachboostpreis"></span> Lapis</a> (stufe <span id="einfachbooststufe"></span>)<br></ul>
@@ -162,10 +188,12 @@
   <div id="shopMenu", style="display: none;">
     <div id="shopuebersicht">
     <ul>Lootbox <a href=# onclick="kaufecbox()">100 Gold</a> (common)<br></ul>
-    <ul>Lootbox <a href=# onclick="kauferbox()">5k Gold</a> (common)<br></ul>
+    <ul>Lootbox <a href=# onclick="kauferbox()">5k Gold</a> (rare)<br></ul>
+    <ul>Lootbox <a href=# onclick="kaufeebox()">200k Gold</a> (epic)<br></ul>
     <ul>Platzhalter</ul>
     <ul>Platzhalter</ul>
-    <ul>Platzhalter</ul>
+    
+    <p>Anzeigedauer:<br><br><a href=# onclick="changeWzeit(0)"><span id="0sText"></span></a> <a href=# onclick="changeWzeit(200)"><span id="02sText"></span></a> <a href=# onclick="changeWzeit(500)"><span id="05sText"></span></a> <a href=# onclick="changeWzeit(1000)">1,0s</a></p>
   </div>
   <div id="openbox">
     <h1><span id="boxinhalt"></span></h1>
@@ -191,6 +219,9 @@
         }
 
       function safe(){
+
+        if (lapis>100) {
+
         localStorage.setItem("lapisclickerboost",boost);
         localStorage.setItem("lapisclickerlapis",lapis);
         localStorage.setItem("lapisclickerlapisgold",lapisGold);
@@ -214,6 +245,11 @@
         }else{
         localStorage.setItem("lapisclickerdrillstatus",0);  
         }
+        if(piggystatus==true){
+        localStorage.setItem("lapisclickerpiggystatus",1);
+        }else{
+        localStorage.setItem("lapisclickerpiggystatus",0);  
+        }
         localStorage.setItem("lapisclickerkaufboost",kaufboost);
         localStorage.setItem("lapisclickermultiboost",multiboost);
         localStorage.setItem("lapisclickersingleboost",singleboost);
@@ -231,6 +267,28 @@
         localStorage.setItem("lapisclickerdrilltoolbuff",drilltoolbuff);
         localStorage.setItem("lapisclickerdrilllapisbuff",drilllapisbuff);
         localStorage.setItem("lapisclickerdrillluckbuff",drillluckbuff);
+        localStorage.setItem("lapisclickerpiggytoolbuff",piggytoolbuff);
+        localStorage.setItem("lapisclickerpiggylapisbuff",piggylapisbuff);
+        localStorage.setItem("lapisclickerpiggyluckbuff",piggyluckbuff);
+        localStorage.setItem("lapisclickerwzeitbox",wZeitBox);
+        localStorage.setItem("lapisclickerwzeitboxwahr",wZeitBoxWahr);
+        if(boxZeit0==true){
+        localStorage.setItem("lapisclickerboxzeit0",1);
+        }else{
+        localStorage.setItem("lapisclickerboxzeit0",0);  
+        }
+        if(boxZeit2==true){
+        localStorage.setItem("lapisclickerboxzeit2",1);
+        }else{
+        localStorage.setItem("lapisclickerboxzeit2",0);  
+        }
+        if(boxZeit5==true){
+        localStorage.setItem("lapisclickerboxzeit5",1);
+        }else{
+        localStorage.setItem("lapisclickerboxzeit5",0);  
+        }
+
+      } 
       }
       function load(){
         boost=parseInt(localStorage.getItem("lapisclickerboost"));
@@ -250,6 +308,9 @@
         if(1==parseInt(localStorage.getItem("lapisclickerdrillstatus"))){
           drillstatus=true;
         }
+        if(1==parseInt(localStorage.getItem("lapisclickerpiggystatus"))){
+          piggystatus=true;
+        }
         kaufboost=parseInt(localStorage.getItem("lapisclickerkaufboost"));
         multiboost=parseInt(localStorage.getItem("lapisclickermultiboost"));
         singleboost=parseInt(localStorage.getItem("lapisclickersingleboost"));
@@ -267,6 +328,23 @@
         drilltoolbuff=parseInt(localStorage.getItem("lapisclickerdrilltoolbuff"));
         drilllapisbuff=parseInt(localStorage.getItem("lapisclickerdrilllapisbuff"));
         drillluckbuff=parseInt(localStorage.getItem("lapisclickerdrillluckbuff"));
+        piggytoolbuff=parseInt(localStorage.getItem("lapisclickerpiggytoolbuff"));
+        piggylapisbuff=parseInt(localStorage.getItem("lapisclickerpiggylapisbuff"));
+        piggyluckbuff=parseInt(localStorage.getItem("lapisclickerpiggyluckbuff"));
+        wZeitBox=parseInt(localStorage.getItem("lapisclickerwzeitbox"));
+        wZeitBoxWahr=parseInt(localStorage.getItem("lapisclickerwzeitboxwahr"));
+        if(1==parseInt(localStorage.getItem("lapisclickerboxzeit0"))){
+          boxZeit0=true;
+          document.getElementById("0sText").innerHTML= "0,0s";
+        }
+        if(1==parseInt(localStorage.getItem("lapisclickerboxzeit2"))){
+          boxZeit2=true;
+          document.getElementById("02sText").innerHTML= "0,2s";
+        }
+        if(1==parseInt(localStorage.getItem("lapisclickerboxzeit5"))){
+          boxZeit5=true;
+          document.getElementById("05sText").innerHTML= "0,5s";
+        }
         showLapis()
         colorTool()
         document.getElementById("einfachbooststufe").innerHTML= singleboost;
@@ -283,6 +361,14 @@
         document.getElementById("drilltoolbuff").innerHTML = drilltoolbuff;
         document.getElementById("drilllapisbuff").innerHTML = drilllapisbuff;
         document.getElementById("drillluckbuff").innerHTML = drillluckbuff;
+        document.getElementById("piggytoolbuff").innerHTML = piggytoolbuff;
+        document.getElementById("piggylapisbuff").innerHTML = piggylapisbuff;
+        document.getElementById("piggyluckbuff").innerHTML = piggyluckbuff;
+        if(wZeitBox!= Number){
+          wZeitBox=1000;
+          wZeitBoxWahr=3;
+          
+        }
       }
       var slot=0;
       var inputslot=0;
@@ -362,12 +448,18 @@
         var pickaxestatus = false;
         var dripperstatus = false;
         var drillstatus = false;
+        var piggystatus = false;
         var toolboost = 1;
         var kaufboost = 0;
         var multiboost = 1;
         var singleboost= 1;
         var multiboostpreis=1000000;
         var zahlString="null";
+        var wZeitBox=1000;
+        var wZeitBoxWahr= 3;
+        var boxZeit0 =false;
+        var boxZeit2 =false;
+        var boxZeit5 =false; //------------------------------------------------------------------------------
         var boxresult="null";
         var randomzahl=0;
         var kaufluck=0;
@@ -387,6 +479,10 @@
         var drilltoolbuff =0;
         var drilllapisbuff =0;
         var drillluckbuff =0;
+
+        var piggytoolbuff =0;
+        var piggylapisbuff =0;
+        var piggyluckbuff =0;
 
 function usetoolbuffpickaxe(){
   if(stashtoolbuff>=1){
@@ -480,6 +576,37 @@ function useluckbuffdrill(){
 }
 }
 
+
+function usetoolbuffpiggy(){
+  if(stashtoolbuff>=1){
+    if(piggytoolbuff<500){
+    piggytoolbuff=piggytoolbuff+1;
+    stashtoolbuff=stashtoolbuff-1;
+    document.getElementById("piggytoolbuff").innerHTML = piggytoolbuff;
+  }
+  }
+}
+
+function uselapisbuffpiggy(){
+  if(stashlapisbuff>=1){
+    if(piggylapisbuff<250){
+    piggylapisbuff=piggylapisbuff+1;
+    stashlapisbuff=stashlapisbuff-1;
+    document.getElementById("piggylapisbuff").innerHTML = piggylapisbuff;
+  }
+}
+}
+
+function useluckbuffpiggy(){
+  if(stashluckbuff>=1){
+    if(piggyluckbuff<250){
+    piggyluckbuff=piggyluckbuff+1;
+    stashluckbuff=stashluckbuff-1;
+    document.getElementById("piggyluckbuff").innerHTML = piggyluckbuff;
+  }
+}
+}
+
 function berechneScore(){
   boost = (toolboost + kaufboost) * multiboost;
 }
@@ -496,6 +623,11 @@ function berechneScoreDripper(){
 
 function berechneScoreDrill(){
   toolboost=100*drilltoolbuff+30*drilllapisbuff+1000;
+  luckscore=drillluckbuff*1+100+(100*kaufluck);
+}
+
+function berechneScorePiggy(){
+  toolboost=50*piggylapisbuff+1500;
   luckscore=drillluckbuff*1+100+(100*kaufluck);
 }
 
@@ -545,6 +677,11 @@ function showForge() {
   }else{
     forgedrill.style.display="none";
   }
+  if(pickaxe=="piggy"){
+    forgepiggy.style.display="block";
+  }else{
+    forgepiggy.style.display="none";
+  }
 }
 
 function showLapis() {
@@ -562,7 +699,7 @@ function showLapis() {
     shop.style.display = "none";
     lapisUmwandeln();
   } 
-  document.getElementById("anzeigeShort").innerHTML=lapisGold;
+  document.getElementById("anzeigeShort").innerHTML=zahlUmwandeln(lapisGold);
 }
 
 function showUpgrades() {
@@ -615,7 +752,7 @@ function showShop() {
         var goldAnzeige = document.getElementById("anzeigeGoldLapis");
         lapisAnzeige.style.display="block";
         goldAnzeige.style.display="none";
-        document.getElementById("anzeigeShort").innerHTML=lapisGold;
+        document.getElementById("anzeigeShort").innerHTML=zahlUmwandeln(lapisGold);
         welchesLapis();
         luck();
         lapisUmwandeln();
@@ -715,7 +852,20 @@ var luckscore=100;
           pickaxe="drill";
           }
           colorTool()
-        } 
+        }
+        
+        function choosePiggy(){
+        if(piggystatus==false){
+        if(lapis>=200000000){
+          lapis=lapis-200000000;
+        pickaxe="piggy";
+        piggystatus=true;
+        }
+        }else{
+          pickaxe="piggy";
+          }
+          colorTool()
+        }
       
     function colorTool(){
       if (pickaxe=="pickaxe"){
@@ -729,6 +879,10 @@ var luckscore=100;
           drillpreis.style.backgroundColor="darkred";
           document.getElementById("drillpreis").innerHTML = "inaktiv";
         }
+        if(piggystatus==true){
+          piggypreis.style.backgroundColor="darkred";
+          document.getElementById("piggypreis").innerHTML = "inaktiv";
+        }
       }
       if (pickaxe=="dripper"){
         dripperpreis.style.backgroundColor="darkgreen";
@@ -741,6 +895,10 @@ var luckscore=100;
           drillpreis.style.backgroundColor="darkred";
           document.getElementById("drillpreis").innerHTML = "inaktiv";
         }
+        if(piggystatus==true){
+          piggypreis.style.backgroundColor="darkred";
+          document.getElementById("piggypreis").innerHTML = "inaktiv";
+        }
       }
       if (pickaxe=="drill"){
         drillpreis.style.backgroundColor="darkgreen";
@@ -752,6 +910,26 @@ var luckscore=100;
         if(dripperstatus==true){
           dripperpreis.style.backgroundColor="darkred";
           document.getElementById("dripperpreis").innerHTML = "inaktiv";
+        }
+        if(piggystatus==true){
+          piggypreis.style.backgroundColor="darkred";
+          document.getElementById("piggypreis").innerHTML = "inaktiv";
+        }
+      }
+      if (pickaxe=="piggy"){
+        piggypreis.style.backgroundColor="darkgreen";
+        document.getElementById("piggypreis").innerHTML = "aktiv";
+        if(pickaxestatus==true){
+          pickaxepreis.style.backgroundColor="darkred";
+          document.getElementById("pickaxepreis").innerHTML = "inaktiv";
+        }
+        if(dripperstatus==true){
+          dripperpreis.style.backgroundColor="darkred";
+          document.getElementById("dripperpreis").innerHTML = "inaktiv";
+        }
+        if(drillstatus==true){
+          drillpreis.style.backgroundColor="darkred";
+          document.getElementById("drillpreis").innerHTML = "inaktiv";
         }
       }
     }    
@@ -777,6 +955,11 @@ var luckscore=100;
           berechneScoreDrill();
             goldChance=0;
             document.getElementById("image").className = "drillpointer";  
+        }
+        if(pickaxe=="piggy"){
+          berechneScorePiggy();
+            goldChance=0;
+            document.getElementById("image").className = "piggypointer";  
         }
         lapisUmwandeln();
     }
@@ -807,7 +990,7 @@ var luckscore=100;
     function kaufecbox(){
       if(lapisGold>=100){
         lapisGold=lapisGold-100;
-        document.getElementById("anzeigeShort").innerHTML=lapisGold;
+        document.getElementById("anzeigeShort").innerHTML=zahlUmwandeln(lapisGold);
         randomzahl=Math.floor(Math.random()*100);
         if(randomzahl < 6){
           if(randomzahl < 3){
@@ -822,15 +1005,17 @@ var luckscore=100;
           lapis=lapis+100;
         }
         document.getElementById("boxinhalt").innerHTML = boxresult;
-        boxinhalt();
-        setTimeout(hideboxinhalt, 1000);
+        if(wZeitBox>0){
+          boxinhalt();
+        setTimeout(hideboxinhalt, wZeitBox);
+        }
         }
       }
 
       function kauferbox(){
       if(lapisGold>=5000){
         lapisGold=lapisGold-5000;
-        document.getElementById("anzeigeShort").innerHTML=lapisGold;
+        document.getElementById("anzeigeShort").innerHTML=zahlUmwandeln(lapisGold);
         randomzahl=Math.floor(Math.random()*100);
         if(randomzahl < 3){
           boxresult="Tool Buff";
@@ -840,10 +1025,52 @@ var luckscore=100;
           lapis=lapis+10000;
         }
         document.getElementById("boxinhalt").innerHTML = boxresult;
-        boxinhalt();
-        setTimeout(hideboxinhalt, 1000);
+        if(wZeitBox>0){
+          boxinhalt();
+        setTimeout(hideboxinhalt, wZeitBox);
+        }
         }
       }
+
+      function kaufeebox(){
+      if(lapisGold>=200000){
+        lapisGold=lapisGold-200000;
+        document.getElementById("anzeigeShort").innerHTML=zahlUmwandeln(lapisGold);
+        randomzahl=Math.floor(Math.random()*100);
+        if(randomzahl < wZeitBoxWahr){
+          if(wZeitBoxWahr==3){
+            boxresult="Wartezeit 0,5s";
+            boxZeit5=true;
+            document.getElementById("05sText").innerHTML= "0,5s";
+          }
+          if(wZeitBoxWahr==2){
+            boxresult="Wartezeit 0,2s";
+            boxZeit2=true;
+            document.getElementById("02sText").innerHTML= "0,2s";
+          }
+          if(wZeitBoxWahr==1){
+            boxresult="Wartezeit 0,0s";
+            boxZeit0=true;
+            document.getElementById("0sText").innerHTML= "0,0s";
+          }
+          wZeitBoxWahr=wZeitBoxWahr-1;
+        }else{
+          boxresult=randomzahl*10 + "k Lapis";
+          lapis=lapis+randomzahl*10000;
+        }
+        document.getElementById("boxinhalt").innerHTML = boxresult;
+        if(wZeitBox>0){
+          boxinhalt();
+        setTimeout(hideboxinhalt, wZeitBox);
+        }
+        }
+      }
+
+    function changeWzeit(zeit){
+      if(zeit==0&&boxZeit0||zeit==200&&boxZeit2||zeit==500&&boxZeit5||zeit==1000){
+        wZeitBox = zeit;
+      }
+    }  
 
     function boxinhalt(){
      var shopuebersicht = document.getElementById("shopuebersicht");
@@ -870,10 +1097,17 @@ var luckscore=100;
         lapisString=""+ zwischenSpeicher2 + "k";
 
           if(lapis>=1000000) {
-          zwischenSpeicher=lapis/100000
+          zwischenSpeicher=lapis/100000;
           zwischenSpeicher= Math.floor(zwischenSpeicher);
         zwischenSpeicher2 = zwischenSpeicher/10;
         lapisString=""+ zwischenSpeicher2 + "m";
+          }
+
+          if(lapis>=1000000000) {
+          zwischenSpeicher=lapis/100000000;
+          zwischenSpeicher= Math.floor(zwischenSpeicher);
+        zwischenSpeicher2 = zwischenSpeicher/10;
+        lapisString=""+ zwischenSpeicher2 + "b";
           }
       }else{
         lapisString=lapis;
@@ -894,6 +1128,13 @@ var luckscore=100;
           zwischenSpeicher= Math.floor(zwischenSpeicher);
         zwischenSpeicher2 = zwischenSpeicher/10;
         zahlString=""+ zwischenSpeicher2 + "m";
+          }
+
+          if(zahl>=1000000000) {
+          zwischenSpeicher=zahl/100000000;
+          zwischenSpeicher= Math.floor(zwischenSpeicher);
+        zwischenSpeicher2 = zwischenSpeicher/10;
+        zahlString=""+ zwischenSpeicher2 + "b";
           }
       }else{
         zahlString=zahl;
