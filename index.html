@@ -73,10 +73,7 @@
     <button onclick="resetLapis()">reset</button>
     <button onclick="safe()">safe</button>
     <button onclick="load()">load</button>
-    
-
-
-
+  
     
 </div>
 </div>
@@ -168,6 +165,8 @@
   <ul><a href=# onclick="uselapisbuffpiggy()"> Lapis Buff (<span id="piggylapisbuff"></span>/250) </a>
     <a href=# onclick="usetoolbuffpiggy()"> Tool Buff (<span id="piggytoolbuff"></span>/500) </a>
     <a href=# onclick="useluckbuffpiggy()"> Luck Buff (<span id="piggyluckbuff"></span>/250) </a><br></ul>
+
+    <br><br><button onclick="resetpiggy()">reset ben PIG</button>
 
     <div id="piggybank">
 
@@ -301,15 +300,23 @@
         kaufluck=parseInt(localStorage.getItem("lapisclickerkaufluck"));
         if(1==parseInt(localStorage.getItem("lapisclickerpickaxestatus"))){
           pickaxestatus=true;
+        }else{
+          pickaxestatus=false;
         }
         if(1==parseInt(localStorage.getItem("lapisclickerdripperstatus"))){
           dripperstatus=true;
+        }else{
+          dripperstatus=false;
         }
         if(1==parseInt(localStorage.getItem("lapisclickerdrillstatus"))){
           drillstatus=true;
+        }else{
+          drillstatus=false;
         }
         if(1==parseInt(localStorage.getItem("lapisclickerpiggystatus"))){
           piggystatus=true;
+        }else{
+          piggystatus=false;
         }
         kaufboost=parseInt(localStorage.getItem("lapisclickerkaufboost"));
         multiboost=parseInt(localStorage.getItem("lapisclickermultiboost"));
@@ -336,14 +343,23 @@
         if(1==parseInt(localStorage.getItem("lapisclickerboxzeit0"))){
           boxZeit0=true;
           document.getElementById("0sText").innerHTML= "0,0s";
+        }else{
+          boxZeit0=false;
+          document.getElementById("0sText").innerHTML= "&#128274";
         }
         if(1==parseInt(localStorage.getItem("lapisclickerboxzeit2"))){
           boxZeit2=true;
           document.getElementById("02sText").innerHTML= "0,2s";
+        }else{
+          boxZeit2=false;
+          document.getElementById("02sText").innerHTML= "&#128274";
         }
         if(1==parseInt(localStorage.getItem("lapisclickerboxzeit5"))){
           boxZeit5=true;
           document.getElementById("05sText").innerHTML= "0,5s";
+        }else{
+          boxZeit5=false;
+          document.getElementById("05sText").innerHTML= "&#128274";
         }
         showLapis()
         colorTool()
@@ -364,11 +380,6 @@
         document.getElementById("piggytoolbuff").innerHTML = piggytoolbuff;
         document.getElementById("piggylapisbuff").innerHTML = piggylapisbuff;
         document.getElementById("piggyluckbuff").innerHTML = piggyluckbuff;
-        if(piggystatus==false){
-          piggylapisbuff=0;
-          piggyluckbuff=0;
-          piggytoolbuff=0;
-        }
       }
       var slot=0;
       var inputslot=0;
@@ -605,6 +616,16 @@ function useluckbuffpiggy(){
     document.getElementById("piggyluckbuff").innerHTML = piggyluckbuff;
   }
 }
+}
+
+function resetpiggy(){
+  piggylapisbuff=0;
+          piggyluckbuff=0;
+          piggytoolbuff=0;
+
+          document.getElementById("piggylapisbuff").innerHTML = piggylapisbuff;
+          document.getElementById("piggyluckbuff").innerHTML = piggyluckbuff;
+          document.getElementById("piggytoolbuff").innerHTML = piggytoolbuff;
 }
 
 function berechneScore(){
