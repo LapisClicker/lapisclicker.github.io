@@ -249,6 +249,12 @@ button{
         }
         button{
             font-size: x-large;
+            width: auto;
+            height: 30px;
+            margin-left: 15%;
+        }
+        #Lapis button{
+            font-size: x-large;
             width: 30%;
             height: 30px;
             margin-left: 35%;
