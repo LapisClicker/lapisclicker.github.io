@@ -11,16 +11,28 @@ body{
     min-height: 80%;
 }
 
+#piggybtn{
+    text-align: center;
+    padding-bottom: 10px;
+    display: none;
+}
+#piggybtn button{
+    border-radius: 50%;
+    background-color: blueviolet;
+    width: 50px;
+    height: 50px;
+    font-size: medium;
+    margin: 0px;
+}
 
 
 #image img {
-    width: 25%;
+    width: 20%;
 
     
-    margin-left: 37.25%;
-      
-    
+    margin-left: 40%;
 }
+
 
 .usal img{
     cursor: pointer;
@@ -239,8 +251,34 @@ button{
 }
 
 #piggybank img{
-    padding-right: 30%;
-    width: 120px;}
+    width: 150px;
+    margin-left: 100px;
+}
+
+    #bankimg {
+        display: inline-block;
+        width:200px;
+        height:200px;
+        text-align: right;
+        padding-right: 20%;
+        margin-right: -50px;
+    }
+    #bankimg h1{
+        width: 200px;
+        margin-left: 75px;
+        margin-top: 0px;
+        font-size: larger;
+    }
+    #bankupgrades {
+        display: inline-block;
+        width:300px;
+        height:100px;
+        text-align: left;
+        margin-left: -50px;
+    }
+    #bankupgrades a{
+        margin-top: 0px;
+    }
 
     @media only screen and (max-width:500px) {
         #navigation a {
@@ -276,8 +314,26 @@ button{
             margin-right: 17.5%;
         }
         #forge img{
-            width: 50%;
+            width: 10%;
         }
-    
-        
+        #piggybank img{
+            display: none;
+        }
+        #bankimg h1{
+            width: 150px;
+            margin-left: auto;
+            margin-right: auto+8x;
+            
+        }
+        #bankupgrades {
+            margin-top: -150px;
+            display: inline-block;
+            width:300px;
+            height:100px;
+            text-align: left;
+            margin-left: -50px;
+        }
+        #bankupgrades a{
+            margin-top: 0px;
+        }
     }
