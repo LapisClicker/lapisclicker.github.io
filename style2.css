@@ -336,4 +336,17 @@ button{
         #bankupgrades a{
             margin-top: 0px;
         }
+        #piggybtn{
+            text-align: center;
+            padding-bottom: 10px;
+            display: none;
+        }
+        #piggybtn button{
+            border-radius: 50%;
+            background-color: blueviolet;
+            width: 50px;
+            height: 50px;
+            font-size: medium;
+            margin: 0px;
+        }
     }
