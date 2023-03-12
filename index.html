@@ -18,6 +18,7 @@
         document.getElementById("dripperpreis").innerHTML= "500 Lapis";
         document.getElementById("drillpreis").innerHTML= "50k Lapis";
         document.getElementById("piggypreis").innerHTML= "200m Lapis";
+        document.getElementById("allinsingle").innerHTML= "&#128274";
         document.getElementById("einfachbooststufe").innerHTML= 1;
         document.getElementById("einfachboostpreis").innerHTML= 50;
         document.getElementById("mehrbooststufe").innerHTML= 0;
@@ -37,6 +38,7 @@
         document.getElementById("05sText").innerHTML= "&#128274";
         document.getElementById("02sText").innerHTML= "&#128274";
         document.getElementById("0sText").innerHTML= "&#128274";
+        document.getElementById("countdown").innerHTML= 1000;
         
         
     document.getElementById("lapis").innerHTML = lapis;
@@ -70,7 +72,12 @@
 
 
     <h1>Dein Lapis: <span id="lapis"></span></h1>
-    <button onclick="resetLapis()">reset</button>
+    <div id="piggybtn">
+    <button onclick="piggyBtnResult(0)">1</button>
+    <button onclick="piggyBtnResult(1)">2</button>
+    <button onclick="piggyBtnResult(2)">3</button>
+  </div>
+    <button onclick="zeigePiggyBtn()" id="countdownanzeige" , style="display: none;"><span id="countdown"></span></button>
     <button onclick="safe()">safe</button>
     <button onclick="load()">load</button>
   
@@ -166,22 +173,32 @@
     <a href=# onclick="usetoolbuffpiggy()"> Tool Buff (<span id="piggytoolbuff"></span>/500) </a>
     <a href=# onclick="useluckbuffpiggy()"> Luck Buff (<span id="piggyluckbuff"></span>/250) </a><br></ul>
 
-    <br><br><button onclick="resetpiggy()">reset ben PIG</button>
 
     <div id="piggybank">
+      <div id="bankimg">
+        <img src="bank.png" alt="Bank">
+        <h1><span id="piggybanklapis"></span> Lapis</h1>
 
-      <img src="bank.png" alt="Bank">
+      </div>
+      <div id="bankupgrades">
+        <ul>
+          <p><a href="#" onclick="bankeinzahlen()">Alles Einzahlen</a></p>
+          <p><a href="#" onclick="bankauszahlen()">Alles Auszahlen</a></p>
+          <p>(3b Lapis)<br>(120 Redlapis)<br>(10 Upgrade Engines)</p>
+          <p><a href="#">upgrade</a></p>
+        </ul>
+      </div>
 
     </div>
 
 </div>
   </div>
   <div id="upgradeMenu", style="display: none;">
-    <ul>+1 Boost <a href=# onclick="erstelleBoost()"><span id="einfachboostpreis"></span> Lapis</a> (stufe <span id="einfachbooststufe"></span>)<br></ul>
-    <ul>+100 Luck <a href=# onclick="erstelleMulti()"><span id="mehrboostpreis"></span> Lapis</a> (stufe <span id="mehrbooststufe"></span>)<br></ul>
+    <ul>+1 Boost <a href=# onclick="erstelleBoost()"><span id="einfachboostpreis"></span> Lapis</a> <a href=# onclick="allinboost()"><span id="allinsingle"></span></a> (stufe <span id="einfachbooststufe"></span>)<br></ul>
+    <ul>+100 Luck <a href=# onclick="erstelleMulti()"><span id="mehrboostpreis"></span> Lapis</a>(stufe <span id="mehrbooststufe"></span>)<br></ul>
     <ul>+1 Luck <a href=# onclick="erstelleMulti()"><span id="mehrboostpreis"></span>  1000 Lapis</a> (stufe <span id="#"></span>)<br></ul>
     <ul>+1 Rank <a href=# onclick="erstelleMulti()"><span id="mehrboostpreis"></span> Lapis</a> (stufe <span id="#"></span>)<br></ul>
-    <ul>+1 Inteligence <a href=# onclick="erstelleMulti()"><span id="mehrboostpreis"></span> Lapis</a> (stufe <span id="#"></span>)<br></ul>
+    <ul>+1 Intelligence <a href=# onclick="erstelleMulti()"><span id="mehrboostpreis"></span> Lapis</a> (stufe <span id="#"></span>)<br></ul>
 
   </div>
   <div id="shopMenu", style="display: none;">
@@ -221,6 +238,10 @@
 
         if (lapis>100) {
 
+
+          localStorage.setItem("lapisclickerversion",1);
+
+
         localStorage.setItem("lapisclickerboost",boost);
         localStorage.setItem("lapisclickerlapis",lapis);
         localStorage.setItem("lapisclickerlapisgold",lapisGold);
@@ -252,6 +273,11 @@
         localStorage.setItem("lapisclickerkaufboost",kaufboost);
         localStorage.setItem("lapisclickermultiboost",multiboost);
         localStorage.setItem("lapisclickersingleboost",singleboost);
+        if(allinsingle==true){
+        localStorage.setItem("lapisclickerallinsingle",1);
+        }else{
+        localStorage.setItem("lapisclickerallinsingle",0);  
+        }
         localStorage.setItem("lapisclickermultiboostpreis",multiboostpreis);
         localStorage.setItem("lapisclickersingleboostpreis",singleboostpreis);
         localStorage.setItem("lapisclickerstashtoolbuff",stashtoolbuff);
@@ -269,6 +295,10 @@
         localStorage.setItem("lapisclickerpiggytoolbuff",piggytoolbuff);
         localStorage.setItem("lapisclickerpiggylapisbuff",piggylapisbuff);
         localStorage.setItem("lapisclickerpiggyluckbuff",piggyluckbuff);
+        localStorage.setItem("lapisclickerpiggybanklapis",piggybanklapis);
+        localStorage.setItem("lapisclickerpiggybankmax",piggybankmax);
+        localStorage.setItem("lapisclickerpiggybankstufe",piggybankstufe);
+        localStorage.setItem("lapisclickerpiggycountdown",piggycountdown);
         localStorage.setItem("lapisclickerwzeitbox",wZeitBox);
         localStorage.setItem("lapisclickerwzeitboxwahr",wZeitBoxWahr);
         if(boxZeit0==true){
@@ -322,6 +352,13 @@
         multiboost=parseInt(localStorage.getItem("lapisclickermultiboost"));
         singleboost=parseInt(localStorage.getItem("lapisclickersingleboost"));
         singleboostpreis=parseInt(localStorage.getItem("lapisclickersingleboostpreis"));
+        if(1==parseInt(localStorage.getItem("lapisclickerallinsingle"))){
+          allinsingle=true;
+          document.getElementById("allinsingle").innerHTML= "all in";
+        }else{
+          allinsingle=false;
+          document.getElementById("allinsingle").innerHTML= "&#128274";
+        }
         multiboostpreis=parseInt(localStorage.getItem("lapisclickermultiboostpreis"));
         stashtoolbuff=parseInt(localStorage.getItem("lapisclickerstashtoolbuff"));
         stashlapisbuff=parseInt(localStorage.getItem("lapisclickerstashlapisbuff"));
@@ -338,6 +375,10 @@
         piggytoolbuff=parseInt(localStorage.getItem("lapisclickerpiggytoolbuff"));
         piggylapisbuff=parseInt(localStorage.getItem("lapisclickerpiggylapisbuff"));
         piggyluckbuff=parseInt(localStorage.getItem("lapisclickerpiggyluckbuff"));
+        piggybanklapis=parseInt(localStorage.getItem("lapisclickerpiggybanklapis"));
+        //piggybankmax=parseInt(localStorage.getItem("lapisclickerpiggybankmax"));
+        piggybankstufe=parseInt(localStorage.getItem("lapisclickerpiggybankstufe"));
+        piggycountdown=parseInt(localStorage.getItem("lapisclickerpiggycountdown"));
         wZeitBox=parseInt(localStorage.getItem("lapisclickerwzeitbox"));
         wZeitBoxWahr=parseInt(localStorage.getItem("lapisclickerwzeitboxwahr"));
         if(1==parseInt(localStorage.getItem("lapisclickerboxzeit0"))){
@@ -380,6 +421,8 @@
         document.getElementById("piggytoolbuff").innerHTML = piggytoolbuff;
         document.getElementById("piggylapisbuff").innerHTML = piggylapisbuff;
         document.getElementById("piggyluckbuff").innerHTML = piggyluckbuff;
+        document.getElementById("piggybanklapis").innerHTML = piggybanklapis;
+        document.getElementById("countdown").innerHTML = piggycountdown;
       }
       var slot=0;
       var inputslot=0;
@@ -464,6 +507,7 @@
         var kaufboost = 0;
         var multiboost = 1;
         var singleboost= 1;
+        var allinsingle =false;
         var multiboostpreis=1000000;
         var zahlString="null";
         var wZeitBox=1000;
@@ -494,6 +538,12 @@
         var piggytoolbuff =0;
         var piggylapisbuff =0;
         var piggyluckbuff =0;
+
+        var piggybanklapis=0;
+        var piggybankstufe=1;
+        var piggybankmax=1000000;
+        var piggycountdown=1000;
+        var piggybtnanswer=0;
 
 function usetoolbuffpickaxe(){
   if(stashtoolbuff>=1){
@@ -618,14 +668,21 @@ function useluckbuffpiggy(){
 }
 }
 
-function resetpiggy(){
-  piggylapisbuff=0;
-          piggyluckbuff=0;
-          piggytoolbuff=0;
+function bankeinzahlen(){
+  if(lapis>piggybankmax){
+    lapis=lapis-piggybankmax;
+    piggybanklapis=piggybankmax;
+  }else{
+    piggybanklapis=lapis;
+    lapis=0;
+  }
+  document.getElementById("piggybanklapis").innerHTML= zahlUmwandeln(piggybanklapis);
+}
 
-          document.getElementById("piggylapisbuff").innerHTML = piggylapisbuff;
-          document.getElementById("piggyluckbuff").innerHTML = piggyluckbuff;
-          document.getElementById("piggytoolbuff").innerHTML = piggytoolbuff;
+function bankauszahlen(){
+  lapis=lapis+piggybanklapis;
+  piggybanklapis=0;
+  document.getElementById("piggybanklapis").innerHTML= zahlUmwandeln(piggybanklapis);
 }
 
 function berechneScore(){
@@ -649,7 +706,7 @@ function berechneScoreDrill(){
 
 function berechneScorePiggy(){
   toolboost=50*piggylapisbuff+1500;
-  luckscore=drillluckbuff*1+100+(100*kaufluck);
+  luckscore=piggyluckbuff*1+100+(100*kaufluck);
 }
 
 
@@ -719,6 +776,10 @@ function showLapis() {
     upgrades.style.display = "none";
     shop.style.display = "none";
     lapisUmwandeln();
+  }
+  if(pickaxe!="piggy"){
+    piggybtn.style.display="none";
+        countdownanzeige.style.display="none";
   } 
   document.getElementById("anzeigeShort").innerHTML=zahlUmwandeln(lapisGold);
 }
@@ -762,8 +823,45 @@ function showShop() {
         welchesLapis();
         lapisUmwandeln();
         luck();
+        if(pickaxe=="piggy"){
+          if(piggycountdown>1){
+            piggycountdown=piggycountdown-1;
+            document.getElementById("countdown").innerHTML=piggycountdown;
+          }else{
+              piggycountdown=0;
+              piggybtnanswer =Math.floor(Math.random()*3);
+              document.getElementById("countdown").innerHTML="klicke: "  + (piggybtnanswer+1);
+              
+              
+              
+
+              //piggybanklapis=piggybanklapis+Math.floor(piggybanklapis/100);
+              //document.getElementById("piggybanklapis").innerHTML= zahlUmwandeln(piggybanklapis);
+              //piggycountdown=1000-piggytoolbuff;
+              //document.getElementById("countdown").innerHTML=piggycountdown;
+            }
+          }
+          
+        }
         
-        
+    function zeigePiggyBtn(){
+      if(piggycountdown==0){
+        piggycountdown=1000-piggytoolbuff;
+        piggybtn.style.display="block";
+        countdownanzeige.style.display="none";
+      }
+    }
+
+    function piggyBtnResult(nummer){
+      if(nummer==piggybtnanswer){
+        piggybanklapis=piggybanklapis+Math.floor(piggybanklapis/100);
+      }else{
+        piggybanklapis=piggybanklapis-Math.floor(piggybanklapis/4)
+      }
+      document.getElementById("piggybanklapis").innerHTML= zahlUmwandeln(piggybanklapis);
+      document.getElementById("countdown").innerHTML=piggycountdown;
+      piggybtn.style.display="none";
+      countdownanzeige.style.display="block";
     }
 
     function doSomethingGold(){
@@ -808,6 +906,15 @@ var luckscore=100;
             document.getElementById("einfachbooststufe").innerHTML= singleboost;
             document.getElementById("einfachboostpreis").innerHTML= zahlUmwandeln(singleboostpreis + 50);  
         }
+    }
+
+    function allinboost(){
+      if(allinsingle){
+        while(lapis>singleboostpreis){
+        erstelleBoost();
+      }
+      }
+      
     }
     
     function erstelleMulti(){
@@ -980,6 +1087,7 @@ var luckscore=100;
         if(pickaxe=="piggy"){
           berechneScorePiggy();
             goldChance=0;
+            countdownanzeige.style.display="block";
             document.getElementById("image").className = "piggypointer";  
         }
         lapisUmwandeln();
@@ -1076,8 +1184,20 @@ var luckscore=100;
           }
           wZeitBoxWahr=wZeitBoxWahr-1;
         }else{
+          if(randomzahl==1){
+            randomzahl=Math.floor(Math.random()*100);
+            if(randomzahl<20){
+              allinsingle=true;
+              boxresult="all in Boost";
+              document.getElementById("allinsingle").innerHTML= "all in";
+            }else{
+              boxresult=randomzahl*20 + "k Lapis";
+              lapis=lapis+randomzahl*20000;
+            }
+          }else{
           boxresult=randomzahl*10 + "k Lapis";
           lapis=lapis+randomzahl*10000;
+          }
         }
         document.getElementById("boxinhalt").innerHTML = boxresult;
         if(wZeitBox>0){
