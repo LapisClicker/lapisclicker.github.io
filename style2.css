@@ -280,6 +280,46 @@ button{
         margin-top: 0px;
     }
 
+    #claimxp{
+        height: 40px;
+        margin-top: 20px;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 0px;
+    }
+
+    #myLevel {
+        width: 60%;
+        background-color: grey;
+        margin: auto;
+      }
+      
+      #myBarLevel {
+        width: 0%;
+        height: 30px;
+        background-color: rgb(24, 168, 229);
+        color: black;
+      }
+
+    
+
+    #myProgress {
+        width: 60%;
+        background-color: grey;
+        margin: auto;
+      }
+      
+      #myBar {
+        width: 0%;
+        height: 30px;
+        background-color: rgb(21, 189, 88);
+        color: black;
+      }
+    #myBar p{
+        text-align: center;
+    }
+
     @media only screen and (max-width:500px) {
         #navigation a {
         
