@@ -78,7 +78,8 @@
     <button onclick="piggyBtnResult(2)">3</button>
   </div>
     <button onclick="zeigePiggyBtn()" id="countdownanzeige" , style="display: none;"><span id="countdown"></span></button>
-    <button onclick="safe()">safe</button>
+    <button>+<span id="boosttext"></span></button>
+    <button onclick="safe()">safe<sup>2</sup></button>
     <button onclick="load()">load</button>
   
     
@@ -165,8 +166,27 @@
   <ul><a href=# onclick="uselapisbuffdrill()"> Lapis Buff (<span id="drilllapisbuff"></span>/100) </a>
     <a href=# onclick="usetoolbuffdrill()"> Tool Buff (<span id="drilltoolbuff"></span>/50) </a>
     <a href=# onclick="useluckbuffdrill()"> Luck Buff (<span id="drillluckbuff"></span>/100) </a><br></ul>
+  <div id="levelgui" style="display: none;">
+    <p>Level <span id="leveltext"></span></p>
+    <div id="myLevel">
+      <div id="myBarLevel"><p><span id="xptext"></span>XP/<span id="gebrauchtexptext"></span>XP</p></div>
+    </div>
+    <button id="claimxp", style="display: none;", onclick="erhaltebelohnung()">claim <span id="combelohnung"></span>XP</button>
+    <p><span id="commissiontext"></span></p>
+    <div id="myProgress">
+      <div id="myBar"><p><span id="progressbartext"></span></p></div>
+    </div>
+  </div>
+  <div id="levelkaufengui">
+    <br><br>
+    <p>Lapislevel <a href="#" onclick="levelKaufen()">1b Lapis</a></p>  
+  </div>
+  <div id="levelbelohnunggui" style="display: none;">
+    <h2><br><b style="color: coral;">Level <span id="leveltext2"></span> erreicht</b><br><span id="belohnungstext"></span></h2>
+    <a href="#" onclick="levelBelohnungabholen()">Best&auml;tigen</a>
+  </div>
 
-</div>
+</div> 
 <div id="forgepiggy">
   <img src="logos/piggy axe.png" alt="logo">
   <ul><a href=# onclick="uselapisbuffpiggy()"> Lapis Buff (<span id="piggylapisbuff"></span>/250) </a>
@@ -196,7 +216,7 @@
   <div id="upgradeMenu", style="display: none;">
     <ul>+1 Boost <a href=# onclick="erstelleBoost()"><span id="einfachboostpreis"></span> Lapis</a> <a href=# onclick="allinboost()"><span id="allinsingle"></span></a> (stufe <span id="einfachbooststufe"></span>)<br></ul>
     <ul>+100 Luck <a href=# onclick="erstelleMulti()"><span id="mehrboostpreis"></span> Lapis</a>(stufe <span id="mehrbooststufe"></span>)<br></ul>
-    <ul>+1 Luck <a href=# onclick="erstelleMulti()"><span id="mehrboostpreis"></span>  1000 Lapis</a> (stufe <span id="#"></span>)<br></ul>
+    <ul style="display: none;">+<input style="font-size: x-large; width: 100px; background-color: rgba(255, 255, 255, 0); border-radius: 3px; border: 2px solid white;" type="number"> Lapis<sup>2</sup> <a href=# onclick="erstelleMulti()"><span id="mehrboostpreis"></span>  1000 Lapis</a> (stufe <span id="#"></span>)<br></ul>
     <ul>+1 Rank <a href=# onclick="erstelleMulti()"><span id="mehrboostpreis"></span> Lapis</a> (stufe <span id="#"></span>)<br></ul>
     <ul>+1 Intelligence <a href=# onclick="erstelleMulti()"><span id="mehrboostpreis"></span> Lapis</a> (stufe <span id="#"></span>)<br></ul>
 
@@ -239,7 +259,7 @@
         if (lapis>100) {
 
 
-          localStorage.setItem("lapisclickerversion",1);
+          localStorage.setItem("lapisclickerversion",2);
 
 
         localStorage.setItem("lapisclickerboost",boost);
@@ -316,7 +336,13 @@
         }else{
         localStorage.setItem("lapisclickerboxzeit5",0);  
         }
-
+        localStorage.setItem("lapisclickerlevel",level);
+        localStorage.setItem("lapisclickerlevelxp",levelxp);
+        localStorage.setItem("lapisclickergebrauchtexp",gebrauchtexp);
+        localStorage.setItem("lapisclickercommission",commission);
+        localStorage.setItem("lapisclickercomcountdown",comcountdown);
+        localStorage.setItem("lapisclickercomcountdownziel",comcountdownziel);
+        localStorage.setItem("lapisclickercombelohnung",combelohnung);
       } 
       }
       function load(){
@@ -376,7 +402,7 @@
         piggylapisbuff=parseInt(localStorage.getItem("lapisclickerpiggylapisbuff"));
         piggyluckbuff=parseInt(localStorage.getItem("lapisclickerpiggyluckbuff"));
         piggybanklapis=parseInt(localStorage.getItem("lapisclickerpiggybanklapis"));
-        //piggybankmax=parseInt(localStorage.getItem("lapisclickerpiggybankmax"));
+        piggybankmax=parseInt(localStorage.getItem("lapisclickerpiggybankmax"));
         piggybankstufe=parseInt(localStorage.getItem("lapisclickerpiggybankstufe"));
         piggycountdown=parseInt(localStorage.getItem("lapisclickerpiggycountdown"));
         wZeitBox=parseInt(localStorage.getItem("lapisclickerwzeitbox"));
@@ -402,13 +428,22 @@
           boxZeit5=false;
           document.getElementById("05sText").innerHTML= "&#128274";
         }
+        if(parseInt(localStorage.getItem("lapisclickerversion"))>1){
+          level=parseInt(localStorage.getItem("lapisclickerlevel"));
+          levelxp=parseInt(localStorage.getItem("lapisclickerlevelxp"));
+          gebrauchtexp=parseInt(localStorage.getItem("lapisclickergebrauchtexp"));
+          commission=localStorage.getItem("lapisclickercommission");
+          comcountdown=parseInt(localStorage.getItem("lapisclickercomcountdown"));
+          comcountdownziel=parseInt(localStorage.getItem("lapisclickercomcountdownziel"));
+          combelohnung=parseInt(localStorage.getItem("lapisclickercombelohnung"));
+        }
+
         showLapis()
         colorTool()
         document.getElementById("einfachbooststufe").innerHTML= singleboost;
         document.getElementById("einfachboostpreis").innerHTML= zahlUmwandeln(singleboostpreis + 50);
         document.getElementById("mehrbooststufe").innerHTML= kaufluck;
         document.getElementById("mehrboostpreis").innerHTML= zahlUmwandeln(multiboostpreis);
-
         document.getElementById("pickaxetoolbuff").innerHTML = pickaxetoolbuff;
         document.getElementById("pickaxelapisbuff").innerHTML = pickaxelapisbuff;
         document.getElementById("pickaxeluckbuff").innerHTML = pickaxeluckbuff;
@@ -423,6 +458,21 @@
         document.getElementById("piggyluckbuff").innerHTML = piggyluckbuff;
         document.getElementById("piggybanklapis").innerHTML = piggybanklapis;
         document.getElementById("countdown").innerHTML = piggycountdown;
+        document.getElementById("xptext").innerHTML = levelxp;
+        document.getElementById("leveltext").innerHTML = level;
+        document.getElementById("leveltext2").innerHTML = level;
+        document.getElementById("combelohnung").innerHTML = combelohnung;
+        document.getElementById("gebrauchtexptext").innerHTML = gebrauchtexp;
+        getcommissiontext();
+        if(level==-1){
+          levelbelohnunggui.style.display="none";
+          levelgui.style.display="none";
+          levelkaufengui.style.display="block";
+        }else{
+          levelbelohnunggui.style.display="none";
+          levelgui.style.display="block";
+          levelkaufengui.style.display="none";
+        }
       }
       var slot=0;
       var inputslot=0;
@@ -541,9 +591,306 @@
 
         var piggybanklapis=0;
         var piggybankstufe=1;
-        var piggybankmax=100000000;
+        var piggybankmax=1000000;
         var piggycountdown=1000;
         var piggybtnanswer=0;
+
+        var level = -1;
+        var levelxp = 0;
+        var gebrauchtexp = 0;
+
+        var commission = "";
+        var comcountdown = 0;
+        var comcountdownziel =0;
+        var combelohnung=0;
+
+
+
+function levelKaufen(){
+  if(lapis>=1000000000){
+    lapis=lapis-1000000000;
+    levelUp();
+    levelgui.style.display="block";
+    levelkaufengui.style.display="none";
+    neueCom();
+    showForge();
+    levelbelohnunggui.style.display="none";
+    prozentprogress=0;
+    claimxp.style.display="none";
+  }
+}
+var belohnungstext = "";
+function levelUp(){
+  levelxp=levelxp-gebrauchtexp;
+  level=level+1;
+  gebrauchtexp=Math.floor(100+(1.2**(level)));
+  berechneLevelProzent();
+  switch (level) {
+    case 1:
+    belohnungstext="";  
+      break;
+    case 2:
+    belohnungstext="";  
+      break;
+    case 3:
+    piggybankmax=5000000;
+    belohnungstext = "Das Maximum deiner Piggy-Bank ist nun 5m";
+      break;
+    case 4:
+    belohnungstext="";  
+      break;
+    case 5:
+    belohnungstext="";  
+      break;
+    case 6:
+    belohnungstext="";  
+      break;
+    case 7:
+      
+      break;
+    case 8:
+    belohnungstext="";  
+      break;
+    case 9:
+    belohnungstext="";  
+      break;
+    case 10:
+      
+      break;
+    case 11:
+    belohnungstext="";  
+      break;
+    case 12:
+    belohnungstext="";  
+      break;
+    case 13:
+    piggybankmax=10000000;
+    belohnungstext = "Das Maximum deiner Piggy-Bank ist nun 10m";
+      break;
+    case 14:
+    belohnungstext="";  
+      break;
+    case 15:
+    belohnungstext="";  
+      break;
+    case 16:
+    belohnungstext="";  
+      break;
+    case 17:
+    belohnungstext="";  
+      break;
+    case 18:
+    belohnungstext="";  
+      break;
+    case 19:
+    belohnungstext="";  
+      break;
+    case 20:
+    belohnungstext="";  
+      break;
+    case 21:
+    belohnungstext="";  
+      break;
+    case 22:
+    belohnungstext="";  
+      break;
+    case 23:
+    piggybankmax=50000000;
+    belohnungstext = "Das Maximum deiner Piggy-Bank ist nun 50m";
+      break;
+    case 24:
+    belohnungstext="";  
+      break;
+    case 25:
+    belohnungstext="";  
+      break;
+    case 26:
+    belohnungstext="";  
+      break;
+    case 27:
+    belohnungstext="";  
+      break;
+    case 28:
+    belohnungstext="";  
+      break;
+    case 29:
+    belohnungstext="";  
+      break;
+    case 30:
+    piggybankmax=100000000;
+    belohnungstext = "Das Maximum deiner Piggy-Bank ist nun 100m"; 
+      break;
+    case 31:
+    piggybankmax=200000000;
+    belohnungstext = "Das Maximum deiner Piggy-Bank ist nun 200m";  
+      break;
+    case 32:
+    piggybankmax=300000000;  
+    belohnungstext = "Das Maximum deiner Piggy-Bank ist nun 300m";    
+      break;
+    case 33:
+    piggybankmax=400000000;   
+    belohnungstext = "Das Maximum deiner Piggy-Bank ist nun 400m";   
+      break;
+    case 34:
+    piggybankmax=500000000;
+    belohnungstext = "Das Maximum deiner Piggy-Bank ist nun 500m";      
+      break;
+    case 35:
+    piggybankmax=600000000;      
+    belohnungstext = "Das Maximum deiner Piggy-Bank ist nun 600m";
+      break;
+    case 36:
+    piggybankmax=700000000;  
+    belohnungstext = "Das Maximum deiner Piggy-Bank ist nun 700m";    
+      break;
+    case 37:
+    piggybankmax=800000000;  
+    belohnungstext = "Das Maximum deiner Piggy-Bank ist nun 800m";    
+      break;
+    case 38:
+    piggybankmax=900000000;   
+    belohnungstext = "Das Maximum deiner Piggy-Bank ist nun 900m";   
+      break;
+    case 39:
+    piggybankmax=1000000000;      
+    belohnungstext = "Das Maximum deiner Piggy-Bank ist nun 1b";
+      break;
+    case 40:
+    belohnungstext="";  
+      break;
+    case 41:
+    belohnungstext="";  
+      break;
+    case 42:
+    belohnungstext="";  
+      break;
+    case 43:
+    //Piggybank final upgrades
+    belohnungstext="";      
+      break;
+    case 44:
+    belohnungstext=""; 
+      break;
+    case 45:
+    belohnungstext="";  
+      break;
+    case 46:
+    belohnungstext=""; 
+      break;
+    case 47:
+    belohnungstext="";  
+      break;
+    case 48:
+    belohnungstext="";  
+      break;
+    case 49:
+    belohnungstext="";  
+      break;
+    case 50:
+    belohnungstext="";  
+      break;
+        
+  
+    default:
+      break;
+  }
+  document.getElementById("belohnungstext").innerHTML = belohnungstext;
+  document.getElementById("leveltext").innerHTML = level;
+  document.getElementById("leveltext2").innerHTML = level;
+  document.getElementById("gebrauchtexptext").innerHTML = gebrauchtexp;
+  document.getElementById("xptext").innerHTML = levelxp;
+  levelbelohnunggui.style.display="block";
+  levelgui.style.display="none";
+}
+
+function levelBelohnungabholen(){
+  levelbelohnunggui.style.display="none";
+  levelgui.style.display="block";
+}
+
+function neueCom(){
+  var comrandom=Math.floor(Math.random()*5);
+  comcountdown=0;
+  if(comrandom==0){
+    commission="1bLapis";
+    comcountdownziel=1000000000;
+    combelohnung=20;//level: 100+(1,2)^x  (max: level 51: 9200xp min level 1= 100xp)
+  }
+  if(comrandom==1){
+    commission="2000ClicksDrill";
+    comcountdownziel=2000;
+    combelohnung=30;
+  }
+  if(comrandom==2){
+    commission="4PiggyBank";
+    comcountdownziel=4;
+    combelohnung=10;
+  }
+  if(comrandom==3){
+    commission="100mLapisBox";
+    comcountdownziel=100000000;
+    combelohnung=50;
+  }
+  if(comrandom==4){
+    commission="25mGold";
+    comcountdownziel=25000000;
+    combelohnung=40;
+  }
+  getcommissiontext();
+  document.getElementById("combelohnung").innerHTML = combelohnung;
+} 
+
+function getcommissiontext(){
+  if (commission=="1bLapis"){
+    document.getElementById("commissiontext").innerHTML = "Farme 1b Lapis";
+  }
+  if (commission=="2000ClicksDrill"){
+    document.getElementById("commissiontext").innerHTML = "Klicke 2000 mal mit dem Drill";
+  }
+  if (commission=="4Piggybank"){
+    document.getElementById("commissiontext").innerHTML = "Erhalte 4 mal Piggy-Bank Zinsen";
+  }
+  if (commission=="100mLapisBox") {
+    document.getElementById("commissiontext").innerHTML = "Bekomme 100m Lapis aus Boxen";    
+  }
+  if (commission=="25mGold") {
+    document.getElementById("commissiontext").innerHTML = "Farme 25m Gold";
+  }
+}
+
+var prozentprogress=0;
+function berechneCommisionProzent(){
+  prozentprogress=(Math.floor(100*(comcountdown/comcountdownziel)));
+  if(prozentprogress>=100){
+    prozentprogress=100;
+    claimxp.style.display="block";
+    document.getElementById("commissiontext").innerHTML = "";
+  }
+  document.getElementById("progressbartext").innerHTML = prozentprogress + "%";
+    myBar.style.width="" +prozentprogress+"%";  
+}
+var levelprozent=0;
+function berechneLevelProzent(){
+  Math.floor(gebrauchtexp/levelxp);
+  levelprozent=(Math.floor(100*(levelxp/gebrauchtexp)));
+  if(levelprozent>=100){
+    levelprozent=100;
+    levelUp();
+  }
+  myBarLevel.style.width="" +levelprozent+"%";
+  document.getElementById("xptext").innerHTML = levelxp;  
+}
+
+function erhaltebelohnung(){
+  levelxp=levelxp+combelohnung;
+  berechneLevelProzent();
+ prozentprogress=0;
+  neueCom();
+  berechneCommisionProzent();
+  claimxp.style.display="none"
+  document.getElementById("xptext").innerHTML = levelxp;
+}
 
 function usetoolbuffpickaxe(){
   if(stashtoolbuff>=1){
@@ -726,6 +1073,8 @@ function berechneScorePiggy(){
 }
 
 function showForge() {
+  berechneCommisionProzent();
+  berechneLevelProzent();
   var tool = document.getElementById("toolMenu");
   var forge = document.getElementById("forge");
   var lapis = document.getElementById("Lapis");
@@ -819,10 +1168,11 @@ function showShop() {
 
     function doSomething(){
         berechneScore();
+        luck();
+        document.getElementById("boosttext").innerHTML=zahlUmwandeln(boost);
         lapis= lapis+boost;
         welchesLapis();
         lapisUmwandeln();
-        luck();
         if(pickaxe=="piggy"){
           if(piggycountdown>1){
             piggycountdown=piggycountdown-1;
@@ -831,17 +1181,14 @@ function showShop() {
               piggycountdown=0;
               piggybtnanswer =Math.floor(Math.random()*3);
               document.getElementById("countdown").innerHTML="klicke: "  + (piggybtnanswer+1);
-              
-              
-              
-
-              //piggybanklapis=piggybanklapis+Math.floor(piggybanklapis/100);
-              //document.getElementById("piggybanklapis").innerHTML= zahlUmwandeln(piggybanklapis);
-              //piggycountdown=1000-piggytoolbuff;
-              //document.getElementById("countdown").innerHTML=piggycountdown;
             }
           }
-          
+          if(commission=="1bLapis"){
+            comcountdown=comcountdown+boost;
+          }
+          if(commission=="2000ClicksDrill"){
+            comcountdown=comcountdown+1;
+          }
         }
         
     function zeigePiggyBtn(){
@@ -855,6 +1202,9 @@ function showShop() {
     function piggyBtnResult(nummer){
       if(nummer==piggybtnanswer){
         piggybanklapis=piggybanklapis+Math.floor(piggybanklapis/100);
+        if(commission="4PiggyBank"){
+          comcountdown=comcountdown+1;
+        }
       }else{
         piggybanklapis=piggybanklapis-Math.floor(piggybanklapis/4)
       }
@@ -875,11 +1225,13 @@ function showShop() {
         welchesLapis();
         luck();
         lapisUmwandeln();
-        
+        if( commission=="25mGold"){
+          comcountdown=comcountdown+boost;
+        }
     }
 var luckscore=100;
     function luck(){
-      wahrDouble = Math.random()*100;
+      wahrDouble = (Math.random()*100)+1;
       wahrscheinlichkeit= Math.floor(wahrDouble);
 
         multiboost= Math.floor(luckscore/100);
@@ -1132,6 +1484,9 @@ var luckscore=100;
         }else{
           boxresult="100 Lapis";
           lapis=lapis+100;
+          if(commission=="100mLapisBox"){
+            comcountdown=comcountdown+100;
+          }
         }
         document.getElementById("boxinhalt").innerHTML = boxresult;
         if(wZeitBox>0){
@@ -1152,6 +1507,9 @@ var luckscore=100;
         }else{
           boxresult="10k Lapis";
           lapis=lapis+10000;
+          if(commission=="100mLapisBox"){
+            comcountdown=comcountdown+10000;
+          }
         }
         document.getElementById("boxinhalt").innerHTML = boxresult;
         if(wZeitBox>0){
@@ -1193,10 +1551,16 @@ var luckscore=100;
             }else{
               boxresult=randomzahl*20 + "k Lapis";
               lapis=lapis+randomzahl*20000;
+              if(commission=="100mLapisBox"){
+                comcountdown=comcountdown+randomzahl*20000;
+              }
             }
           }else{
           boxresult=randomzahl*10 + "k Lapis";
           lapis=lapis+randomzahl*10000;
+          if(commission=="100mLapisBox"){
+            comcountdown=comcountdown+randomzahl*10000;
+          }
           }
         }
         document.getElementById("boxinhalt").innerHTML = boxresult;
